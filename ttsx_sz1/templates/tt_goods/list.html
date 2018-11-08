@@ -1,0 +1,51 @@
+{% extends 'tt_goods/base.html' %}
+
+{% block nav %}
+	<div class="breadcrumb">
+		<a href="#">全部分类</a>
+		<span>></span>
+		<a href="#">{{ type_title }}</a>
+	</div>
+{% endblock nav %}
+
+{% block right %}
+			<div class="sort_bar">
+				<a href="/list{{ tid }}_{{ pindex }}_1/" {% if order == '1' %}class="active"{% endif %}>默认</a>
+				<a href="/list{{ tid }}_{{ pindex }}_2/" {% if order == '2' %}class="active"{% endif %}>价格</a>
+				<a href="/list{{ tid }}_{{ pindex }}_3/" {% if order == '3' %}class="active"{% endif %}>人气</a>
+			</div>
+
+			<ul class="goods_type_list clearfix">
+                {% for g in page %}
+				<li>
+					<a href="/{{ g.id }}/"><img src="/static/media/{{ g.gpic }}"></a>
+					<h4><a href="/{{ g.id }}/">{{ g.gtitle }}</a></h4>
+					<div class="operate">
+						<span class="prize">￥{{ g.gprice }}</span>
+						<span class="unit">{{ g.gprice }}/{{ g.gunit }}</span>
+						<a href="#" class="add_goods" title="加入购物车"></a>
+					</div>
+				</li>
+                {% endfor %}
+			</ul>
+
+			<div class="pagenation">
+                {% if page.has_previous %}
+				<a href="/list{{ tid }}_1_{{ order }}/">首页</a>
+				<a href="/list{{ tid }}_{{ pindex|add:-1 }}_{{ order }}/">上一页</a>
+                {% endif %}
+
+            {% for i in page.paginator.page_range %}
+            {% if i == pindex %}
+                <a href="#" class="active">{{ i }}</a>
+                {% else %}
+                <a href="/list{{ tid }}_{{ i }}_{{ order }}/">{{ i }}</a>
+                {% endif %}
+            {% endfor %}
+
+                {% if page.has_next %}
+				<a href="/list{{ tid }}_{{ pindex|add:1 }}_{{ order }}/">下一页</a>
+				<a href="/list{{ tid }}_{{ page.paginator.num_pages }}_{{ order }}/">末页</a>
+                {% endif %}
+			</div>
+{% endblock right %}
